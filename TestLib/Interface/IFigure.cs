@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestLib.Interface
 {
-    interface IFigure
+    public interface IFigure
     {
         public double GetArea();
     }

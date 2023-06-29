@@ -4,28 +4,41 @@ namespace TestLib
 {
     public class Triangle : IFigure
     {
-        private double angle;
+        private double sideA, sideB, sideC;
 
-        private double sideA, sideB;
-
-        Triangle(double sideA, double sideB, double angle)
+        public Triangle(double sideA, double sideB, double sideC)
         {
             this.sideA = sideA;
             this.sideB = sideB;
-            this.angle = angle;
+            this.sideC = sideC;
+        }
+
+        private (double firstSide, double secondSide)? CheckSquare()
+        {
+            if (Math.Pow(sideA, 2) + Math.Pow(sideB, 2) == Math.Pow(sideC, 2))
+            {
+                return (sideA,sideB); 
+            }
+            if (Math.Pow(sideA, 2) + Math.Pow(sideC, 2) == Math.Pow(sideB, 2))
+            {
+                return (sideA, sideC);
+            }
+            if (Math.Pow(sideC, 2) + Math.Pow(sideB, 2) == Math.Pow(sideA, 2))
+            {
+                return (sideC, sideB);
+            }
+            return null;
         }
 
         public double GetArea()
         {
-            if (angle <= 0 || angle >= 180)
+            var squareSides = CheckSquare();
+            if (squareSides != null && squareSides.HasValue)
             {
-                throw new Exception("It is not Triangle");
+                return 0.5 * squareSides.Value.firstSide * squareSides.Value.secondSide;
             }
-            if (angle == 90)
-            {
-                return 0.5 * sideA * sideB;
-            }
-            return 0.5 * sideA * sideB * Math.Sin(angle);
+            double p = (sideA + sideB + sideC) / 2;
+            return Math.Sqrt(p * (p - sideA) * (p - sideB) * (p - sideC));
         }
     }
 }
